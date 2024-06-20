@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 import re
 
 import cv2
@@ -28,6 +29,7 @@ class ImageDataset(Dataset):
                  filter_single_punctuation: bool = False,
                  case_sensitive: bool = False,
                  type: str = 'DICT90',
+                 dict_file: str = None,
                  convert_mode: str = 'RGB',
                  data_aug: bool = True,
                  deteriorate_ratio: float = 0.,
@@ -48,7 +50,9 @@ class ImageDataset(Dataset):
         self.case_sensitive, self.is_training = case_sensitive, is_training
         self.filter_single_punctuation = filter_single_punctuation
         self.data_aug, self.multiscales, self.mask = data_aug, multiscales, mask
-        self.label_convertor = AttnConvertor(dict_type=type, max_seq_len=max_length, with_unknown=True)
+        # TODO AttnConvertor init with dict_file not dict_type
+        # self.label_convertor = AttnConvertor(dict_type=type, max_seq_len=max_length, with_unknown=True)
+        self.label_convertor = AttnConvertor(dict_file=dict_file, max_seq_len=max_length, with_unknown=True)
         self.use_abi = use_abi
 
         self.env = lmdb.open(str(path), readonly=True, lock=False, readahead=False, meminit=False)

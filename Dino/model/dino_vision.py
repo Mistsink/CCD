@@ -135,7 +135,8 @@ class Mlp(nn.Module):
 class DINO_Finetune(nn.Module):
     def __init__(self, config):
         super(DINO_Finetune, self).__init__()
-        self.label_convertor = AttnConvertor(dict_type='DICT90', max_seq_len=config.decoder_max_seq_len, with_unknown=True)
+        # TODO AttnConvertor init with dict_file not dict_type
+        self.label_convertor = AttnConvertor(dict_type=config.dict_file, max_seq_len=config.decoder_max_seq_len, with_unknown=True)
 
         """ model configuration """
         # ============ building student and teacher networks ... ============
