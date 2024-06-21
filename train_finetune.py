@@ -12,7 +12,6 @@ import torch
 import torch.nn.init as init
 import torch.utils.data
 from torch.backends import cudnn
-from torch.utils.tensorboard import SummaryWriter
 import torchvision.utils as vutils
 from fastai.vision import *
 
@@ -173,8 +172,6 @@ if __name__ == "__main__":
     _set_random_seed(config.global_seed)
     logging.info(config)
     os.makedirs(f"./saved_models/{config.global_name}", exist_ok=True)
-    os.makedirs(f"./tensorboard", exist_ok=True)
-    config.writer = SummaryWriter(log_dir=f"./tensorboard/{config.global_name}")
 
     """dataset preparation"""
     logging.info('Construct dataset.')

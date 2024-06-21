@@ -1,0 +1,14 @@
+workdir/
+weight/
+
+.DS_Store
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.bak
+*.tmp
+
+
+data/

@@ -1,5 +1,5 @@
 global:
-  name: finetune_base_65536
+  name: finetune_small_65536
   phase: train
   stage: train-supervised
   workdir: workdir
@@ -12,15 +12,16 @@ dataset:
   type: ST
   train: {
     roots: [
-        'xxx/data_lmdb/training/label/Synth'
+        'xxx/data_lmdb/training/ARD/TextOCR',
+        'xxx/data_lmdb/training/ARD/Openimages',
     ],
-    batch_size: 224,
+    batch_size: 288,
   }
   valid: {
     roots: [
         'xxx/data_lmdb/validation'
     ],
-    batch_size: 224
+    batch_size: 288
   }
   test: {
     roots: [
@@ -36,7 +37,7 @@ dataset:
         "xxx/data_lmdb/evaluation/benchmark/HOST",
         "xxx/data_lmdb/evaluation/benchmark/WOST",
     ],
-    batch_size: 224
+    batch_size: 288
   }
   data_aug: True
   multiscales: False
@@ -46,14 +47,14 @@ dataset:
   charset_type: 'DICT90'
 
 training:
-  epochs: 10
+  epochs: 35
   start_iters: 0
   show_iters: 1000
-  eval_iters: 2000
+  eval_iters: 1000
   save_iters: 100000
 
 model:
-  pretrain_checkpoint: 'weight/Small_STD_checkpoint.pth'
+  pretrain_checkpoint: './saved_models/pre_small_65536/checkpoint.pth'
   checkpoint:
 decoder:
   type: 'NRTRDecoder'
@@ -72,7 +73,7 @@ decoder:
 mp:
   num: 4
 
-arch: 'vit_base'
+arch: 'vit_small'
 patch_size: 4
 out_dim: 65536
 weight_decay: 0.05

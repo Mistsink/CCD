@@ -1,17 +1,31 @@
 import logging
+from pathlib import Path
 import re
-import time
-
+from typing import Union
 import cv2
 import lmdb
 import six
+import random
+import math
+import numpy as np
+import warnings
+
 from fastai.vision import *
+import torch
 from torchvision import transforms
+from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
+import PIL
 
 from Dino.utils.transforms import CVColorJitter, CVDeterioration, CVGeometry
+import torchvision.transforms.functional as TF
+from Dino.convertor.attn import AttnConvertor
+from imgaug import augmenters as iaa
+
 from Dino.utils.utils import CharsetMapper, onehot
-from Dino.utils.kmeans import clusterpixels
+
+
+PathOrStr = Union[Path, str]
 
 class ImageDataset(Dataset):
     "`ImageDataset` read data from LMDB database."
@@ -200,9 +214,9 @@ class ImageDataset(Dataset):
     def _postprocessing(self, image, text, idx):
         if self.return_raw: return image, text
 
-        length = tensor(len(text) + 1).to(dtype=torch.long)  # one for end token
+        length = torch.tensor(len(text) + 1).to(dtype=torch.long)  # one for end token
         label = self.charset.get_labels(text, case_sensitive=self.case_sensitive)
-        label = tensor(label).to(dtype=torch.long)
+        label = torch.tensor(label).to(dtype=torch.long)
         if self.one_hot_y: label = onehot(label, self.charset.num_classes)
 
         if self.return_idx:

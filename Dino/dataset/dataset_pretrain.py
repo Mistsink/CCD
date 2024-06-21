@@ -1,19 +1,27 @@
 import logging
 from pathlib import Path
-import re
-
+from typing import Union
 import cv2
 import lmdb
 import six
+import random
+import math
+import numpy as np
+import warnings
+
 from fastai.vision import *
 from torchvision import transforms
+from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
+import PIL
 
 from Dino.utils.transforms import CVColorJitter, CVDeterioration, CVGeometry
-from Dino.utils.utils import CharsetMapper, onehot
 import torchvision.transforms.functional as TF
 from Dino.convertor.attn import AttnConvertor
 from imgaug import augmenters as iaa
+
+
+PathOrStr = Union[Path, str]
 
 
 class ImageDataset(Dataset):
@@ -51,8 +59,10 @@ class ImageDataset(Dataset):
         self.filter_single_punctuation = filter_single_punctuation
         self.data_aug, self.multiscales, self.mask = data_aug, multiscales, mask
         # TODO AttnConvertor init with dict_file not dict_type
-        # self.label_convertor = AttnConvertor(dict_type=type, max_seq_len=max_length, with_unknown=True)
-        self.label_convertor = AttnConvertor(dict_file=dict_file, max_seq_len=max_length, with_unknown=True)
+        if not type.endswith('txt'):
+            self.label_convertor = AttnConvertor(dict_type=type, max_seq_len=max_length, with_unknown=True)
+        else:
+            self.label_convertor = AttnConvertor(dict_file=type, max_seq_len=max_length, with_unknown=True)
         self.use_abi = use_abi
 
         self.env = lmdb.open(str(path), readonly=True, lock=False, readahead=False, meminit=False)

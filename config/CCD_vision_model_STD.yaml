@@ -24,17 +24,7 @@ dataset:
   }
   test: {
     roots: [
-        "xxx/data_lmdb/evaluation/benchmark/IIIT5k_3000",
-        "xxx/data_lmdb/evaluation/benchmark/SVT",
-        "xxx/data_lmdb/evaluation/benchmark/IC13_1015",
-        "xxx/data_lmdb/evaluation/benchmark/IC15_1811",
-        "xxx/data_lmdb/evaluation/benchmark/SVTP",
-        "xxx/data_lmdb/evaluation/benchmark/CUTE80",
-        "xxx/data_lmdb/evaluation/benchmark/COCOText",
-        "xxx/data_lmdb/evaluation/benchmark/CTW",
-        "xxx/data_lmdb/evaluation/benchmark/TotalText",
-        "xxx/data_lmdb/evaluation/benchmark/HOST",
-        "xxx/data_lmdb/evaluation/benchmark/WOST",
+        "data/eval",
     ],
     batch_size: 224
   }

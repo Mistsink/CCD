@@ -6,7 +6,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
-from Dino.utils.kmeans import clusterpixels
 from Dino.utils.transforms import ImageToPIL, ImageToArray
 from Dino.dataset.dataset import ImageDataset
 from Dino.dataset.augmentation_pipelines import get_augmentation_pipeline
